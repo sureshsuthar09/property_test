@@ -9,7 +9,7 @@ if(!isset($_GET['api_key'])){
 
 $api_key = htmlspecialchars($_GET['api_key']);
 
-$totalPage = 2000;
+$totalPage = 130;
 
 for($i=1; $i<=$totalPage; $i++){
 
