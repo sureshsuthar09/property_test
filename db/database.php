@@ -80,6 +80,6 @@ class DatabaseClass
 		$getStatement->execute();
 		$getResult = $getStatement->fetchAll(\PDO::FETCH_ASSOC);
 
-		return ['data'=>$getResult,'left_rec'=>$left_rec];
+		return ['data'=>$getResult,'left_rec'=>$left_rec,'total_rec'=>$rec_count];
    }
 }

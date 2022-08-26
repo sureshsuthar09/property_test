@@ -113,7 +113,7 @@ $result = $data->get_properties($page,$filtersData);
 			<?php } ?>
 		</div>
 		<div class="row mt-4" style="margin-bottom: 25px;">
-			<div class="col-md-4">
+			<div class="col-md-5">
 				<?php
 
 					if(isset($_GET['page'])){
@@ -143,6 +143,7 @@ $result = $data->get_properties($page,$filtersData);
 						$page_pre = $page-2;
 						echo "<a href = \"$url$last\" class='btn btn-sm btn-primary'>Previous Page $page_pre</a>";
 					}
+					echo " Total Records: ".$result['total_rec'];
 				?>
 			</div>
 		</div>

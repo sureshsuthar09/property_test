@@ -6,7 +6,7 @@ $api_key = api_key;
 
 for($i=1; $i<=126; $i++){
 
-	$url = "https://trial.craig.mtcserver15.com/api/properties?api_key=2S7rhsaq9X1cnfkMCPHX64YsWYyfe1he&page[number]=$i&page[size]=100"; 
+	$url = "https://trial.craig.mtcserver15.com/api/properties?api_key=$api_key&page[number]=$i&page[size]=100"; 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
