@@ -3,8 +3,8 @@ include("db/database.php");
 include("config/constant.php");
 
 if(!isset($_GET['api_key'])){
-	echo json_encode(['success'=>false,'error'=>true,'msg'='api_key parameter is required']);
-	break;
+	echo json_encode(['success'=>false,'error'=>true,'msg'=>'api_key parameter is required']);
+	exit;
 }
 
 $api_key = htmlspecialchars($_GET['api_key']);
@@ -24,13 +24,13 @@ for($i=1; $i<=$totalPage; $i++){
 
 	if(isset($result->status) && $result->status=='error' && isset($result->error)){
 		echo json_encode(['success'=>false,'error'=>true,'msg'=>$result->error]);
-		break;
+		exit;
 	}
 
 	// When found data zero
 	if(count($result->data)==0 && $i!=1){
 		echo json_encode(['success'=>true,'msg'=>'Data inserted successfully']);
-		break;
+		exit;
 	}
 
 	// Initialize database connection
