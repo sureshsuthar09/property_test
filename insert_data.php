@@ -4,7 +4,9 @@ include("config/constant.php");
 
 $api_key = api_key;
 
-for($i=1; $i<=126; $i++){
+$totalPage = 2000;
+
+for($i=1; $i<=$totalPage; $i++){
 
 	$url = "https://trial.craig.mtcserver15.com/api/properties?api_key=$api_key&page[number]=$i&page[size]=100"; 
 	$ch = curl_init();
@@ -14,6 +16,11 @@ for($i=1; $i<=126; $i++){
 	curl_close($ch);
 
 	$result = json_decode($response);
+
+	// When found data zero
+	if(count($result->data)==0){
+		break;
+	}
 
 	// Initialize database connection
 	$data = new DatabaseClass();

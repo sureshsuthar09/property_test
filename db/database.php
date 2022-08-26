@@ -40,7 +40,7 @@ class DatabaseClass
 		$getStatement1->execute();
 		$getResult1 = $getStatement1->fetchAll(\PDO::FETCH_ASSOC);
 
-		$rec_limit = 4;
+		$rec_limit = 10;
 
 		if(isset($page ) ) {
 			$page_data = $page + 1;
@@ -74,6 +74,7 @@ class DatabaseClass
 		   $whereCondition = 'WHERE '.implode(' AND ',$whereCondition);
 		}
 
+		
 	 	$insertQry = "select property_type.property_title as property_title, property_type.property_description as property_description ,property.id, property.property_type_id, property.country, property.town, property.description, property.address, property.image, property.thumbnail, property.latitude, property.longitude, property.number_of_bedrooms, property.number_of_bathrooms, property.price, property.type FROM property LEFT JOIN property_type ON property.property_type_id =property_type.id $whereCondition LIMIT $offset, $rec_limit";
 
    		$getStatement = $this->dbConn->prepare($insertQry);
