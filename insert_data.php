@@ -2,6 +2,11 @@
 include("db/database.php");
 include("config/constant.php");
 
+if(!isset($_GET['api_key'])){
+	echo json_encode(['success'=>false,'error'=>true,'msg'='api_key parameter is required']);
+	break;
+}
+
 $api_key = htmlspecialchars($_GET['api_key']);
 
 $totalPage = 2000;
