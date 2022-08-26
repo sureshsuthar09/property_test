@@ -2,50 +2,56 @@
 include("db/database.php");
 include("config/constant.php");
 
-$url = 'https://trial.craig.mtcserver15.com/api/properties';           
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-$response = curl_exec($ch);
-curl_close($ch);
+$api_key = api_key;
 
-$result = json_decode($response);
+for($i=1; $i<=126; $i++){
 
-// Initialize database connection
-$data = new DatabaseClass();
+	$url = "https://trial.craig.mtcserver15.com/api/properties?api_key=2S7rhsaq9X1cnfkMCPHX64YsWYyfe1he&page[number]=$i&page[size]=100"; 
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	$response = curl_exec($ch);
+	curl_close($ch);
 
-if(isset($result->data) && count($result->data)>0){
-	foreach ($result->data as $key => $value) {
-		$resultData['property'] = [
-			'property_type_id'=>$value->property_type_id,
-			'county'=>$value->county,
-			'country'=>$value->country,
-			'town'=>$value->town,
-			'description'=>$value->description,
-			'address'=>$value->address,
-			'image'=>$value->image_full,
-			'thumbnail'=>$value->image_thumbnail,
-			'latitude'=>$value->latitude,
-			'longitude'=>$value->longitude,
-			'number_of_bedrooms'=>$value->num_bedrooms,
-			'number_of_bathrooms'=>$value->num_bathrooms,
-			'price'=>$value->price,
-			'type'=>$value->type
-		];
+	$result = json_decode($response);
 
-		$resultData['property_type'] = [
-			'id'=>$value->property_type->id,
-			'property_title'=>$value->property_type->title,
-			'property_description'=>$value->property_type->description
-		];
+	// Initialize database connection
+	$data = new DatabaseClass();
 
-		$data->insert_data($resultData);
+	if(isset($result->data) && count($result->data)>0){
+		foreach ($result->data as $key => $value) {
+			$resultData['property'] = [
+				'property_type_id'=>$value->property_type_id,
+				'county'=>$value->county,
+				'country'=>$value->country,
+				'town'=>$value->town,
+				'description'=>$value->description,
+				'address'=>$value->address,
+				'image'=>$value->image_full,
+				'thumbnail'=>$value->image_thumbnail,
+				'latitude'=>$value->latitude,
+				'longitude'=>$value->longitude,
+				'number_of_bedrooms'=>$value->num_bedrooms,
+				'number_of_bathrooms'=>$value->num_bathrooms,
+				'price'=>$value->price,
+				'type'=>$value->type
+			];
+
+			$resultData['property_type'] = [
+				'id'=>$value->property_type->id,
+				'property_title'=>$value->property_type->title,
+				'property_description'=>$value->property_type->description
+			];
+
+			$data->insert_data($resultData);
+		}
+		
+	}else{
+		echo json_encode(['success'=>false,'msg'=>'Data not found']);
 	}
-	echo json_encode(['success'=>true,'msg'=>'Data inserted successfully']);
-}else{
-	echo json_encode(['success'=>false,'msg'=>'Data not found']);
 }
 
+echo json_encode(['success'=>true,'msg'=>'Data inserted successfully']);
 
 
 ?>
