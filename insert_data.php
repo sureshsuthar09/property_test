@@ -2,7 +2,7 @@
 include("db/database.php");
 include("config/constant.php");
 
-$api_key = api_key;
+$api_key = htmlspecialchars($_GET['api_key']);
 
 $totalPage = 2000;
 
@@ -17,14 +17,21 @@ for($i=1; $i<=$totalPage; $i++){
 
 	$result = json_decode($response);
 
+	if(isset($result->status) && $result->status=='error' && isset($result->error)){
+		echo json_encode(['success'=>false,'error'=>true,'msg'=>$result->error]);
+		break;
+	}
+
 	// When found data zero
-	if(count($result->data)==0){
+	if(count($result->data)==0 && $i!=1){
+		echo json_encode(['success'=>true,'msg'=>'Data inserted successfully']);
 		break;
 	}
 
 	// Initialize database connection
 	$data = new DatabaseClass();
 
+	// PDO Automatically added sql real escape string when insert data
 	if(isset($result->data) && count($result->data)>0){
 		foreach ($result->data as $key => $value) {
 			$resultData['property'] = [
@@ -49,16 +56,10 @@ for($i=1; $i<=$totalPage; $i++){
 				'property_title'=>$value->property_type->title,
 				'property_description'=>$value->property_type->description
 			];
-
 			$data->insert_data($resultData);
 		}
-		
 	}else{
 		echo json_encode(['success'=>false,'msg'=>'Data not found']);
 	}
 }
-
-echo json_encode(['success'=>true,'msg'=>'Data inserted successfully']);
-
-
 ?>
